@@ -1,3 +1,10 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [CustomAuditDataItem.cs](./CS/E4565.Module/BusinessObjects/CustomAuditDataItem.cs)
+* [MyAddress.cs](./CS/E4565.Module/BusinessObjects/MyAddress.cs)
+* [MyPerson.cs](./CS/E4565.Module/BusinessObjects/MyPerson.cs)
+<!-- default file list end -->
 # How to show audit entries for a current object and its aggregated objects in one list
 
 
