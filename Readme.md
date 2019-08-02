@@ -55,6 +55,7 @@
 <p>2. The standard AuditDataItemPersistent class is not designed to show information about a related object, so introduce a new CustomAuditDataItem class with an additional property:</p>
 
 ```cs
+    [NonPersistent, DomainComponent]
     public class CustomAuditDataItem {
         private AuditDataItemPersistent sourceAuditDataItem;
         private string targetObjectName;
