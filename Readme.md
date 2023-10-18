@@ -4,60 +4,15 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
 <!-- default file list -->
-*Files to look at*:
 
-* [CustomAuditDataItem.cs](CS/EF/ExtendAuditEF/ExtendAuditEF.Module/BusinessObjects/CustomAuditDataItem.cs)
-* [Contact.cs](CS/EF/ExtendAuditEF/ExtendAuditEF.Module/BusinessObjects/Contact.cs)
 
 <!-- default file list end -->
 # How to show audit entries for a current object and its aggregated objects in one list
 
+This example shows how to show audit information about a current object and each object from its collection property:
 
-<p>The AuditTrail module is not designed to show audit information about a current object and each object from its collection property.</p><p>However, you can implement this behavior manually, and this example demonstrates how to do this:</p><br />
-<p>1. Introduce a new collection property to return an extended list with necessary audit entries:</p>
-
-```cs
-    public class MyPerson : XPObject {
-        public MyPerson(Session session) : base(session) { }
-        public string FullName {
-            get { return GetPropertyValue<string>("FullName"); }
-            set { SetPropertyValue<string>("FullName", value); }
-        }
-        [Association, Aggregated]
-        public XPCollection<MyAddress> Addresses {
-            get { return GetCollection<MyAddress>("Addresses"); }
-        }
-        private BindingList<CustomAuditDataItem> auditTrail;
-        public BindingList<CustomAuditDataItem> AuditTrail {
-            get {
-                if(auditTrail == null) {
-                    auditTrail = new BindingList<CustomAuditDataItem>();
-                    auditTrail.AllowEdit = false;
-                    auditTrail.AllowNew = false;
-                    auditTrail.AllowRemove = false;
-                    XPCollection<AuditDataItemPersistent> rootItems = AuditedObjectWeakReference.GetAuditTrail(Session, this);
-                    if(rootItems != null) {
-                        foreach(AuditDataItemPersistent entry in rootItems) {
-                            auditTrail.Add(new CustomAuditDataItem(entry, "Person"));
-                        }
-                    }
-                    foreach(MyAddress address in Addresses) {
-                        XPCollection<AuditDataItemPersistent> addressItems = AuditedObjectWeakReference.GetAuditTrail(Session, address);
-                        if(addressItems != null) {
-                            foreach(AuditDataItemPersistent entry in addressItems) {
-                                auditTrail.Add(new CustomAuditDataItem(entry, "Address - " + address.Oid.ToString() + ", " + address.AddressLine));
-                            }
-                        }
-                    }
-                }
-                return auditTrail;
-            }
-        }
-    }
-
-```
-
-<p>2. The standard AuditDataItemPersistent class is not designed to show information about a related object, so introduce a new CustomAuditDataItem class with an additional property:</p>
+## Implementation Details
+1. Introduce a new non persistent CustomAuditDataItem class that we will use to show the audit information:</p>
 
 ```cs
     [DomainComponent]
@@ -80,8 +35,62 @@
 
 ```
 
-<p>As a result, the application will look as follows (in addition, I have customized the layout to demonstrate items from the 'Addresses' and 'Audit' properties at once):
 
-<br/>
+2. In the business class introduce a new collection property to return an extended list with necessary audit entries:
 
+```cs
+using DevExpress.ExpressApp;
+using DevExpress.Persistent.Base;
+using DevExpress.Persistent.BaseImpl.EF;
+using DevExpress.Persistent.BaseImpl.EFCore.AuditTrail;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace dxTestSolution.Module.BusinessObjects;
+[DefaultClassOptions]
+public class Contact : BaseObject {
+    public virtual string FirstName { get; set; }
+    public virtual string LastName { get; set; }
+    public virtual int Age { get; set; }
+    public virtual DateTime BirthDate { get; set; }
+
+    public virtual ObservableCollection<MyTask> MyTasks { get; set; } = new ObservableCollection<MyTask>();
+
+    private BindingList<CustomAuditDataItem> auditTrail;
+    [CollectionOperationSet(AllowAdd = false, AllowRemove = false)]
+    [NotMapped]
+    public virtual BindingList<CustomAuditDataItem> AuditTrail {
+        get {
+            if (auditTrail == null) {
+                auditTrail = new BindingList<CustomAuditDataItem>();
+                auditTrail.AllowEdit = false;
+                auditTrail.AllowNew = false;
+                auditTrail.AllowRemove = false;
+                IList<AuditDataItemPersistent> rootItems = AuditDataItemPersistent.GetAuditTrail(ObjectSpace, this);
+                if (rootItems != null) {
+                    foreach (AuditDataItemPersistent entry in rootItems) {
+                        auditTrail.Add(new CustomAuditDataItem(entry, "Contact"));
+                    }
+                }
+                foreach (MyTask task in MyTasks) {
+                    IList<AuditDataItemPersistent> taskItems = AuditDataItemPersistent.GetAuditTrail(ObjectSpace, task);
+                    if (taskItems != null) {
+                        foreach (AuditDataItemPersistent entry in taskItems) {
+                            auditTrail.Add(new CustomAuditDataItem(entry, "Task - " +  task.Subject));
+                        }
+                    }
+                }
+            }
+            return auditTrail;
+        }
+    }
+}
+
+```
+
+## Files to Review
+
+* [CustomAuditDataItem.cs](CS/EF/ExtendAuditEF/ExtendAuditEF.Module/BusinessObjects/CustomAuditDataItem.cs)
+* [Contact.cs](CS/EF/ExtendAuditEF/ExtendAuditEF.Module/BusinessObjects/Contact.cs)
 
