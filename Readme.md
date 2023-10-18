@@ -6,9 +6,9 @@
 <!-- default file list -->
 *Files to look at*:
 
-* [CustomAuditDataItem.cs](./CS/E4565.Module/BusinessObjects/CustomAuditDataItem.cs)
-* [MyAddress.cs](./CS/E4565.Module/BusinessObjects/MyAddress.cs)
-* [MyPerson.cs](./CS/E4565.Module/BusinessObjects/MyPerson.cs)
+* [CustomAuditDataItem.cs](CS/EF/ExtendAuditEF/ExtendAuditEF.Module/BusinessObjects/CustomAuditDataItem.cs)
+* [Contact.cs](CS/EF/ExtendAuditEF/ExtendAuditEF.Module/BusinessObjects/Contact.cs)
+
 <!-- default file list end -->
 # How to show audit entries for a current object and its aggregated objects in one list
 
@@ -60,7 +60,7 @@
 <p>2. The standard AuditDataItemPersistent class is not designed to show information about a related object, so introduce a new CustomAuditDataItem class with an additional property:</p>
 
 ```cs
-    [NonPersistent, DomainComponent]
+    [DomainComponent]
     public class CustomAuditDataItem {
         private AuditDataItemPersistent sourceAuditDataItem;
         private string targetObjectName;
@@ -71,9 +71,7 @@
         public string TargetObjectName { get { return targetObjectName; } }
         public string Description { get { return sourceAuditDataItem.Description; } }
         public DateTime ModifiedOn { get { return sourceAuditDataItem.ModifiedOn; } }
-        [Size(1024)]
         public string NewValue { get { return sourceAuditDataItem.NewValue; } }
-        [Size(1024)]
         public string OldValue { get { return sourceAuditDataItem.OldValue; } }
         public string OperationType { get { return sourceAuditDataItem.OperationType; } }
         public string PropertyName { get { return sourceAuditDataItem.PropertyName; } }
@@ -82,7 +80,7 @@
 
 ```
 
-<p>As a result, the application will look as follows (in addition, I have customized the layout to demonstrate items from the 'Addresses' and 'Audit' properties at once):</p><p><img src="https://raw.githubusercontent.com/DevExpress-Examples/how-to-show-audit-entries-for-a-current-object-and-its-aggregated-objects-in-one-list-e4565/13.1.4+/media/96b39e19-bf5d-4fae-b6bc-7eaf9192aa17.png"></p>
+<p>As a result, the application will look as follows (in addition, I have customized the layout to demonstrate items from the 'Addresses' and 'Audit' properties at once):
 
 <br/>
 
