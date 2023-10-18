@@ -38,4 +38,7 @@
     <PackageReference Include="DevExpress.RichEdit.Export" Version="23.1.5" />
     <PackageReference Include="DevExpress.Win.Design" Version="23.1.5" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExtendAudit.Module\ExtendAudit.Module.csproj" />
+  </ItemGroup>
 </Project>

@@ -20,4 +20,7 @@
     <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="23.1.5" />
     <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="23.1.5" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExtendAudit.Module\ExtendAudit.Module.csproj" />
+  </ItemGroup>
 </Project>

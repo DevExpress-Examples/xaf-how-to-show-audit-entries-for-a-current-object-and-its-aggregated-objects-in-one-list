@@ -4,10 +4,11 @@ using System.Text;
 using DevExpress.Xpo;
 using DevExpress.ExpressApp.DC;
 using DevExpress.Persistent.BaseImpl;
+using DevExpress.ExpressApp;
 
 namespace dxTestSolution.Module.BusinessObjects {
     [ DomainComponent]
-    public class CustomAuditDataItem {
+    public class CustomAuditDataItem: NonPersistentBaseObject {
         private AuditDataItemPersistent sourceAuditDataItem;
         private string targetObjectName;
         public CustomAuditDataItem(AuditDataItemPersistent sourceAuditDataItem, string targetObjectName) {
