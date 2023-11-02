@@ -8,7 +8,7 @@
 <!-- default file list end -->
 # XAF - How to show audit entries for a current object and its aggregated objects in one list
 
-This example shows how to show audit information about a current object and each object from its collection property:
+This example demonstrated how to show audit information about a current object and each object in its collection property:
 ![image](https://github.com/DevExpress-Examples/XAF_how-to-show-audit-entries-for-a-current-object-and-its-aggregated-objects-in-one-list-e4565/assets/14300209/cc683e55-8757-474b-958f-004e8cf3a291)
 
 ## Implementation Details
