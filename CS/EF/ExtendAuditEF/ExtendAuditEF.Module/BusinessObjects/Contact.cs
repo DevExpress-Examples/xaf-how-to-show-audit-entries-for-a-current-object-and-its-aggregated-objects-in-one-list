@@ -1,17 +1,10 @@
-﻿using DevExpress.ExpressApp.Model;
-using DevExpress.ExpressApp;
+﻿using DevExpress.ExpressApp;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl.EF;
 using DevExpress.Persistent.BaseImpl.EFCore.AuditTrail;
-using DevExpress.Xpo;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace dxTestSolution.Module.BusinessObjects;
 [DefaultClassOptions]
@@ -22,12 +15,6 @@ public class Contact : BaseObject {
     public virtual DateTime BirthDate { get; set; }
 
     public virtual ObservableCollection<MyTask> MyTasks { get; set; } = new ObservableCollection<MyTask>();
-
-    //[CollectionOperationSet(AllowAdd = false, AllowRemove = false)]
-    //[NotMapped]
-    //public virtual IList<AuditDataItemPersistent> ChangeHistory {
-    //    get { return AuditDataItemPersistent.GetAuditTrail(ObjectSpace, this); }
-    //}
 
     private BindingList<CustomAuditDataItem> auditTrail;
     [CollectionOperationSet(AllowAdd = false, AllowRemove = false)]
@@ -42,14 +29,14 @@ public class Contact : BaseObject {
                 IList<AuditDataItemPersistent> rootItems = AuditDataItemPersistent.GetAuditTrail(ObjectSpace, this);
                 if (rootItems != null) {
                     foreach (AuditDataItemPersistent entry in rootItems) {
-                        auditTrail.Add(new CustomAuditDataItem(entry, "Person"));
+                        auditTrail.Add(new CustomAuditDataItem(entry, "Contact"));
                     }
                 }
                 foreach (MyTask task in MyTasks) {
                     IList<AuditDataItemPersistent> taskItems = AuditDataItemPersistent.GetAuditTrail(ObjectSpace, task);
                     if (taskItems != null) {
                         foreach (AuditDataItemPersistent entry in taskItems) {
-                            auditTrail.Add(new CustomAuditDataItem(entry, "Task - " + task.ID.ToString() + ", " + task.Subject));
+                            auditTrail.Add(new CustomAuditDataItem(entry, "Task - " +  task.Subject));
                         }
                     }
                 }
@@ -59,5 +46,5 @@ public class Contact : BaseObject {
     }
 }
 
- 
+
 
