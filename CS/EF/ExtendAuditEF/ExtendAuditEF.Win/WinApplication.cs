@@ -19,7 +19,6 @@ public class ExtendAuditEFWindowsFormsApplication : WinApplication {
 		SplashScreen = new DXSplashScreen(typeof(XafSplashScreen), new DefaultOverlayFormOptions());
         ApplicationName = "ExtendAuditEF";
         CheckCompatibilityType = DevExpress.ExpressApp.CheckCompatibilityType.DatabaseSchema;
-        UseOldTemplates = false;
         DatabaseVersionMismatch += ExtendAuditEFWindowsFormsApplication_DatabaseVersionMismatch;
         CustomizeLanguagesList += ExtendAuditEFWindowsFormsApplication_CustomizeLanguagesList;
     }

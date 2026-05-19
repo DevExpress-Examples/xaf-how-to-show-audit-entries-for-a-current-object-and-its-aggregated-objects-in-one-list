@@ -14,7 +14,6 @@ public class ExtendAuditWindowsFormsApplication : WinApplication {
 		SplashScreen = new DXSplashScreen(typeof(XafSplashScreen), new DefaultOverlayFormOptions());
         ApplicationName = "ExtendAudit";
         CheckCompatibilityType = DevExpress.ExpressApp.CheckCompatibilityType.DatabaseSchema;
-        UseOldTemplates = false;
         DatabaseVersionMismatch += ExtendAuditWindowsFormsApplication_DatabaseVersionMismatch;
         CustomizeLanguagesList += ExtendAuditWindowsFormsApplication_CustomizeLanguagesList;
     }
